@@ -5,10 +5,10 @@ metadata:
 spec:
   destination:
     name: ''
-    namespace: devhub
+    namespace: ansible-mcp
     server: 'https://kubernetes.default.svc'
   source:
-    path: 'utils/ai-rhdh-customization-provider/helm'
+    path: 'deploy'
     repoURL: 'https://github.com/glroland/ansible-mcp.git'
     targetRevision: HEAD
     helm:
