@@ -3,6 +3,7 @@ import logging
 import uvicorn
 from mcp.server.fastmcp import FastMCP
 from starlette.responses import JSONResponse
+from ansible_template import run_ansible_template
 
 logger = logging.getLogger(__name__)
 
@@ -16,6 +17,32 @@ sse_app = mcp.sse_app()
 def add(a: int, b: int) -> int:
     """Add two numbers"""
     return a + b
+
+
+@mcp.tool(
+    annotations={
+        "title": "Run's the demo job template.",
+        "readOnlyHint": True,
+        "openWorldHint": True,
+    }
+)
+def run_demo_job_template():
+    """Runs the Demo Job Template """
+    template_name = "Demo Job Template"
+    run_ansible_template(template_name)
+
+
+@mcp.tool(
+    annotations={
+        "title": "Run's a job template with the specified name as provided by the user in Ansible Automation Platform.",
+        "readOnlyHint": False,
+        "openWorldHint": True,
+    }
+)
+def run_job_template_in_ansible(template_name: str):
+    """Runs the specified Job Template in Ansible Automation Platform """
+    run_ansible_template(template_name)
+
 
 
 @mcp.resource("greeting://{name}")
