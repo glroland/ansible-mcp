@@ -40,6 +40,19 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
           - containerPort: {{ .Values.image.port }}
+          env:
+            - name: AAP_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: ansible-mcp-secrets
+                  key: AAP_HOST
+                  optional: true
+            - name: AAP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ansible-mcp-secrets
+                  key: AAP_TOKEN
+                  optional: true
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           readinessProbe:
@@ -71,6 +84,11 @@ spec:
             failureThreshold: 3
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: ansible-mcp-secrets
+          secret:
+            secretName: ansible-mcp-secrets
+            optional: true
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
